@@ -4,5 +4,4 @@ numpy
 matplotlib
 bt
 yfinance
-plotly.graph_objects
-plotly.subplots
+plotly
