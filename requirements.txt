@@ -5,3 +5,8 @@ matplotlib
 bt
 yfinance
 plotly
+seaborn
+arch
+scipy
+warnings
+statsmodels
