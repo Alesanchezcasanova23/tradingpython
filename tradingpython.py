@@ -19,7 +19,7 @@ def calculate_rsi(data, window=14):
 # ======================================
 # Streamlit App
 # ======================================
-st.title("Stock and RSI Indicator")
+st.title("Stock and RSI Indicator hola")
 
 # Input for ticker
 ticker = st.text_input("Enter Stock Ticker:", value="AAPL")
