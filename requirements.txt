@@ -1,12 +1,10 @@
 streamlit
 pandas
 numpy
-matplotlib
-bt
-yfinance
 plotly
 seaborn
+matplotlib
+yfinance
 arch
 scipy
-warnings
 statsmodels
