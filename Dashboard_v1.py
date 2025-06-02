@@ -82,8 +82,6 @@ st.subheader('----------------------------------------------------------')
 if "stock_list" not in st.session_state:
     st.session_state.stock_list = []
 
-# Input field for stock ticker
-ticker = st.text_input("Enter a stock ticker for analysis:", value="SPY")
 # Example list of possible tickers (you can expand this)
 AVAILABLE_TICKERS = [
     "AAPL", "MSFT", "GOOG", "AMZN", "META", "TSLA", "NVDA", "SPY", "QQQ", "TLT", "VTI", "GLD", "XLF", "XLE"
