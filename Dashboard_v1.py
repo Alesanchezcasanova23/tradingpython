@@ -71,7 +71,7 @@ def combine_data(*dataframes_with_symbols):
 # Streamlit title
 # =======================================================================================================================
 
-st.title("Stock Analysis Dashboard v1")
+st.title("Stock Analysis Dashboard v11")
 st.subheader('----------------------------------------------------------')
 
 # =======================================================================================================================
@@ -357,7 +357,7 @@ if st.session_state.stock_list:
                         if (close < lower) and (rsi < 30) and (macd > macd_signal) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
                             # Emit BUY
                             buy_signal_dates.append(date)
-                            buy_signal_prices.append(row.Adjusted)  # use Adjusted column for plotting
+                            buy_signal_prices.append(row.Close)  # use Adjusted column for plotting
                             last_signal = "BUY"
                             continue  # after buy, skip to next date
 
@@ -366,7 +366,7 @@ if st.session_state.stock_list:
                         if (close > upper) and (rsi > 70) and (macd < macd_signal * 1.5) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
                             # Emit SELL
                             sell_signal_dates.append(date)
-                            sell_signal_prices.append(row.Adjusted)  # use Adjusted column for plotting
+                            sell_signal_prices.append(row.Close)  # use Adjusted column for plotting
                             last_signal = "SELL"
                             continue  # after sell, skip to next date
 
