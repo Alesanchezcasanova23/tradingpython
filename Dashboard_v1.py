@@ -82,6 +82,8 @@ st.subheader('----------------------------------------------------------')
 if "stock_list" not in st.session_state:
     st.session_state.stock_list = []
 
+# Input field for stock ticker
+ticker = st.text_input("Enter a stock ticker for analysis:", value="SPY")
 # Example list of possible tickers (you can expand this)
 AVAILABLE_TICKERS = [
     "AAPL", "MSFT", "GOOG", "AMZN", "META", "TSLA", "NVDA", "SPY", "QQQ", "TLT", "VTI", "GLD", "XLF", "XLE"
@@ -330,45 +332,20 @@ if st.session_state.stock_list:
 
                 stock_data = calculate_obv(stock_data)
 
-                # Initialize state
-                position_state = "neutral"  # possible states: "neutral", "long", "short"
+                # Define Buy and Sell signals based on indicators
+                buy_signals = stock_data[
+                    (stock_data['Close'] < lower_boundary) &
+                    (stock_data['RSI'] < 30) &
+                    (stock_data['macd'] > stock_data['macd_signal']) &
+                    (stock_data['predicted_volatility'] < stock_data['predicted_volatility'].quantile(0.75))
+                    ]
 
-                # Create empty lists to store signal dates and prices
-                buy_signal_dates = []
-                buy_signal_prices = []
-                sell_signal_dates = []
-                sell_signal_prices = []
-
-                # Iterate over the dataframe by date (you can use .itertuples() for performance)
-                for row in stock_data.itertuples():
-                    date = row.Index
-                    close = row.Close
-                    rsi = row.RSI
-                    macd = row.macd
-                    macd_signal = row.macd_signal
-                    volatility = row.predicted_volatility
-                    
-                    # Determine boundaries for current row
-                    lower = lower_boundary.loc[date]
-                    upper = upper_boundary.loc[date]
-                    
-                    # ----- BUY condition -----
-                    if position_state in ["neutral", "short"]:
-                        if (close < lower) and (rsi < 30) and (macd > macd_signal) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
-                            # Emit BUY signal
-                            buy_signal_dates.append(date)
-                            buy_signal_prices.append(close)
-                            position_state = "long"  # update state
-                            continue  # go to next row
-
-                    # ----- SELL condition -----
-                    if position_state in ["neutral", "long"]:
-                        if (close > upper) and (rsi > 70) and (macd < macd_signal * 1.5) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
-                            # Emit SELL signal
-                            sell_signal_dates.append(date)
-                            sell_signal_prices.append(close)
-                            position_state = "short"  # update state
-                            continue  # go to next row
+                sell_signals = stock_data[
+                    (stock_data['Close'] > upper_boundary) &
+                    (stock_data['RSI'] > 70) &
+                    (stock_data['macd'] < stock_data['macd_signal'] * 1.5) &
+                    (stock_data['predicted_volatility'] < stock_data['predicted_volatility'].quantile(0.75))
+                    ]
 
                 # Apply seasonal adjustment as an example
                 stock_data['Month'] = stock_data.index.month
