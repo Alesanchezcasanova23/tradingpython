@@ -331,21 +331,46 @@ if st.session_state.stock_list:
 
 
                 stock_data = calculate_obv(stock_data)
+                # Initialize signal state
+                last_signal = "NONE"  # initial state: no position
 
-                # Define Buy and Sell signals based on indicators
-                buy_signals = stock_data[
-                    (stock_data['Close'] < lower_boundary) &
-                    (stock_data['RSI'] < 30) &
-                    (stock_data['macd'] > stock_data['macd_signal']) &
-                    (stock_data['predicted_volatility'] < stock_data['predicted_volatility'].quantile(0.75))
-                    ]
+                # Create empty lists to store signal dates and prices
+                buy_signal_dates = []
+                buy_signal_prices = []
 
-                sell_signals = stock_data[
-                    (stock_data['Close'] > upper_boundary) &
-                    (stock_data['RSI'] > 70) &
-                    (stock_data['macd'] < stock_data['macd_signal'] * 1.5) &
-                    (stock_data['predicted_volatility'] < stock_data['predicted_volatility'].quantile(0.75))
-                    ]
+                sell_signal_dates = []
+                sell_signal_prices = []
+
+                # Iterate over the stock data in order
+                for row in stock_data.itertuples():
+                    date = row.Index
+                    close = row.Close
+                    rsi = row.RSI
+                    macd = row.macd
+                    macd_signal = row.macd_signal
+                    volatility = row.predicted_volatility
+
+                    # Current dynamic thresholds
+                    lower = lower_boundary.loc[date]
+                    upper = upper_boundary.loc[date]
+
+                    # ----- BUY condition -----
+                    if last_signal in ["SELL", "NONE"]:
+                        if (close < lower) and (rsi < 30) and (macd > macd_signal) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
+                            # Emit BUY
+                            buy_signal_dates.append(date)
+                            buy_signal_prices.append(row.Adjusted)  # use Adjusted column for plotting
+                            last_signal = "BUY"
+                            continue  # after buy, skip to next date
+
+                    # ----- SELL condition -----
+                    if last_signal == "BUY":
+                        if (close > upper) and (rsi > 70) and (macd < macd_signal * 1.5) and (volatility < stock_data['predicted_volatility'].quantile(0.75)):
+                            # Emit SELL
+                            sell_signal_dates.append(date)
+                            sell_signal_prices.append(row.Adjusted)  # use Adjusted column for plotting
+                            last_signal = "SELL"
+                            continue  # after sell, skip to next date
 
                 # Apply seasonal adjustment as an example
                 stock_data['Month'] = stock_data.index.month
@@ -381,17 +406,23 @@ if st.session_state.stock_list:
                 # Add MACD Histogram
                 fig4.add_trace(go.Bar(x=stock_data.index, y=stock_data['macd'] - stock_data['macd_signal'],
                                       name='MACD Histogram', marker=dict(color='purple', opacity=0.3)))
+                # Add Buy Signals (with state-based logic)
+                fig4.add_trace(go.Scatter(
+                    x=buy_signal_dates,
+                    y=buy_signal_prices,
+                    mode='markers',
+                    name='Buy Signal',
+                    marker=dict(color='green', size=8, symbol='circle')
+                ))
 
-                # Add Buy Signals
-                fig4.add_trace(go.Scatter(x=buy_signals.index, y=buy_signals['Adjusted'],
-                                          mode='markers', name='Buy Signal (RSI < 30)',
-                                          marker=dict(color='green', size=8, symbol='circle')))
-
-                # Add Sell Signals
-                fig4.add_trace(go.Scatter(x=sell_signals.index, y=sell_signals['Adjusted'],
-                                          mode='markers', name='Sell Signal (RSI > 70)',
-                                          marker=dict(color='red', size=8, symbol='circle')))
-
+                # Add Sell Signals (with state-based logic)
+                fig4.add_trace(go.Scatter(
+                    x=sell_signal_dates,
+                    y=sell_signal_prices,
+                    mode='markers',
+                    name='Sell Signal',
+                    marker=dict(color='red', size=8, symbol='circle')
+                ))
                 # Highlight and annotate the last price
                 last_price = stock_data['Close'].iloc[-1]
                 last_date = stock_data.index[-1]
