@@ -44,12 +44,7 @@ if ticker:
                 vertical_spacing=0.05,
                 subplot_titles=(f"{ticker} Closing Price", f"{ticker} RSI (Relative Strength Index)")
             )
-
-            # Plot Closing Price
-            fig.add_trace(
-                go.Scatter(x=stock_data.index, y=stock_data['Close'], name="Close Price"),
-                row=1, col=1
-            )
+        
 
             # Plot RSI
             fig.add_trace(
