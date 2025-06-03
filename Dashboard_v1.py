@@ -370,15 +370,6 @@ if st.session_state.stock_list:
                             last_signal = "SELL"
                             continue  # after sell, skip to next date
 
-                # Apply seasonal adjustment as an example
-                stock_data['Month'] = stock_data.index.month
-                stock_data['Day of Week'] = stock_data.index.dayofweek
-                seasonal_adjustment = stock_data['Month'].apply(lambda x: 1.2 if x == 12 else 1)
-                buy_signals = buy_signals.copy()
-                sell_signals = sell_signals.copy()
-                buy_signals.loc[:, 'Adjusted'] = buy_signals['Close'] * seasonal_adjustment.loc[buy_signals.index]
-                sell_signals.loc[:, 'Adjusted'] = sell_signals['Close'] * seasonal_adjustment.loc[sell_signals.index]
-
                 # Create the Plotly figure for the EMA strategy
                 fig4 = go.Figure()
 
