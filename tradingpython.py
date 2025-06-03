@@ -42,7 +42,7 @@ if ticker:
                 rows=2, cols=1, shared_xaxes=True,
                 row_heights=[0.7, 0.3],
                 vertical_spacing=0.05,
-                subplot_titles=(f"{ticker} Closing Price", f"{ticker} RSI (Relative Strength Index)")
+                subplot_titles=(f"{ticker} RSI (Relative Strength Index)")
             )
         
 
