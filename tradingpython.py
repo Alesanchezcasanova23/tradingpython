@@ -19,10 +19,15 @@ def calculate_rsi(data, window=14):
 # ======================================
 # Streamlit App
 # ======================================
-st.title("Stock and RSI Indicator hola")
+st.title("Stock and RSI Indicator")
 
-# Input for ticker
-ticker = st.text_input("Enter Stock Ticker:", value="AAPL")
+# Example list of possible tickers (you can expand this)
+AVAILABLE_TICKERS = [
+    "AAPL", "MSFT", "GOOG", "AMZN", "META", "TSLA", "NVDA", "SPY", "QQQ", "TLT", "VTI", "GLD", "XLF", "XLE"
+]
+# Select a ticker from predefined options
+ticker = st.selectbox("Select a stock ticker for analysis:", options=AVAILABLE_TICKERS)
+
 
 if ticker:
     try:
