@@ -60,7 +60,7 @@ def combine_data(*dataframes_with_symbols):
         df.columns = [f"{col}_{stock_symbol}" for col in df.columns]
 
         # Concatenate along the index using an inner join to keep only common dates
-        if combined_data is None:
+        if combined_data is None
             combined_data = df
         else:
             combined_data = pd.concat([combined_data, df], axis=1, join='inner')
@@ -71,7 +71,7 @@ def combine_data(*dataframes_with_symbols):
 # Streamlit title
 # =======================================================================================================================
 
-st.title("Stock Analysis Dashboard v1")
+st.title("Stock Analysis Dashboard GROUP")
 st.subheader('----------------------------------------------------------')
 
 # =======================================================================================================================
