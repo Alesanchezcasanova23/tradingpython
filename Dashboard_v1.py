@@ -160,24 +160,24 @@ if st.session_state.stock_list:
 #=======================================================================================================================
                 stock_data['RSI'] = calculate_rsi(stock_data)
                 # Calculate RSI
-                rsi = calculate_rsi(data['aapl'], period=14)
+                rsi = calculate_rsi(stock_data['aapl'], period=14)
 
                 # Generate signal: 1 when RSI < 30, 0 when RSI > 70
-                signal = pd.Series(index=data.index, dtype=float)
+                signal = pd.Series(index=stock_data.index, dtype=float)
                 position = 0
-                for i in range(len(data)):
+                for i in range(len(stock_data)):
                     if rsi.iloc[i] < 30:
                         position = 1
                     elif rsi.iloc[i] > 70:
                         position = 0
                         signal.iloc[i] = position
 
-                # Save signal to data
-                data['signal'] = signal
+                # Save signal to stock_data
+                stock_data['signal'] = signal
                 # Plot RSI and signal
                 fig, ax1 = plt.subplots(figsize=(14,6))
 
-                ax1.plot(data.index, rsi, label='RSI')
+                ax1.plot(stock_data.index, rsi, label='RSI')
                 ax1.axhline(70, color='red', linestyle='--')
                 ax1.axhline(30, color='green', linestyle='--')
                 ax1.set_title('RSI and Signal')
