@@ -95,7 +95,7 @@ if "stock_list" not in st.session_state:
 
 # Example list of possible tickers (you can expand this)
 AVAILABLE_TICKERS = [
-    "AAPL", "MSFT", "GOOG", "AMZN", "META", "TSLA", "NVDA", "SPY", "QQQ", "TLT", "VTI", "GLD", "XLF", "XLE"
+    "AAPL", "MSFT", "GOOG", "AMZN", "META", "TSLA", "NVDA", "SPY", "QQQ", "TLT", "VTI", "GLD", "XLF", "XLE","XOM","BRK.A"
 ]
 # Select a ticker from predefined options
 ticker = st.selectbox("Select a stock ticker for analysis:", options=AVAILABLE_TICKERS)
