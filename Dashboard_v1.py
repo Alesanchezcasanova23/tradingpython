@@ -163,9 +163,9 @@ if st.session_state.stock_list:
                 signal = pd.Series(index=stock_data.index, dtype=float)
                 position = 0
                 for i in range(len(stock_data)):
-                    if rsi.iloc[i] < 30:
+                    if stock_data['RSI'].iloc[i] < 30:
                         position = 1
-                    elif rsi.iloc[i] > 70:
+                    elif stock_data['RSI'].iloc[i] > 70:
                         position = 0
                         signal.iloc[i] = position
 
@@ -174,7 +174,7 @@ if st.session_state.stock_list:
                 # Plot RSI and signal
                 fig, ax1 = plt.subplots(figsize=(14,6))
 
-                ax1.plot(stock_data.index, rsi, label='RSI')
+                ax1.plot(stock_data.index, stock_data['RSI'], label='RSI')
                 ax1.axhline(70, color='red', linestyle='--')
                 ax1.axhline(30, color='green', linestyle='--')
                 ax1.set_title('RSI and Signal')
