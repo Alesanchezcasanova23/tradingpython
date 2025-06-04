@@ -158,28 +158,6 @@ if st.session_state.stock_list:
 #=======================================================================================================================
                 #showing the strategy
 #=======================================================================================================================
-                stock_data['RSI'] = calculate_rsi(stock_data)
-                # Generate signal: 1 when RSI < 30, 0 when RSI > 70
-                signal = pd.Series(index=stock_data.index, dtype=float)
-                position = 0
-                for i in range(len(stock_data)):
-                    if stock_data['RSI'].iloc[i] < 30:
-                        position = 1
-                    elif stock_data['RSI'].iloc[i] > 70:
-                        position = 0
-                        signal.iloc[i] = position
-
-                # Save signal to stock_data
-                stock_data['signal'] = signal
-                # Plot RSI and signal
-                fig, ax1 = plt.subplots(figsize=(14,6))
-
-                ax1.plot(stock_data.index, stock_data['RSI'], label='RSI')
-                ax1.axhline(70, color='red', linestyle='--')
-                ax1.axhline(30, color='green', linestyle='--')
-                ax1.set_title('RSI and Signal')
-                ax1.legend()
-                plt.show()
                 # Create a subplot with 2 rows
                 fig = make_subplots(
                     rows=2, cols=1, shared_xaxes=True,
