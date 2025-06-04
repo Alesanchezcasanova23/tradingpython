@@ -492,20 +492,7 @@ if st.session_state.stock_list:
                     for col in forecast_df.columns
                 ]
 
-                # Example probability: Probability forecast will be above the last historical close
-                current_price = series.iloc[-1]
-                forecast_col = f"{ticker.lower()}_forecast"
-                lower_ci_col = f"{ticker.lower()}_lower_ci"
-                upper_ci_col = f"{ticker.lower()}_upper_ci"
-
-                # Compute probability that the forecast is above current_price on each day
-                # P(X > threshold) = 1 - CDF(threshold)
-                prob_col = f"{ticker.lower()}_prob_above_current"
-                forecast_df[prob_col] = 1 - norm.cdf(
-                    x=current_price,
-                    loc=forecast_df[forecast_col],
-                    scale=std_err
-                )
+    
 
                 # Store the forecast results in a dictionary
                 forecast_results[ticker] = forecast_df
