@@ -100,14 +100,6 @@ AVAILABLE_TICKERS = [
 # Select a ticker from predefined options
 ticker = st.selectbox("Select a stock ticker for analysis:", options=AVAILABLE_TICKERS)
 
-# Button to add ticker to the list
-if st.button("Add Stock"):
-    if ticker:
-        if ticker.upper() not in st.session_state.stock_list:
-            st.session_state.stock_list.append(ticker.upper())
-            st.success(f"Added {ticker.upper()} to the analysis list!")
-        else:
-            st.warning(f"{ticker.upper()} is already in the list.")
 
 # Create a list to store processed data for each ticker
 processed_data_list = []
