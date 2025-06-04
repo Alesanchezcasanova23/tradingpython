@@ -108,18 +108,6 @@ if st.button("Add Stock"):
             st.success(f"Added {ticker.upper()} to the analysis list!")
         else:
             st.warning(f"{ticker.upper()} is already in the list.")
-# Display tickers along with a delete button for each
-if st.session_state.stock_list:
-    st.write("Tickers for analysis:")
-    for i, t in enumerate(st.session_state.stock_list):
-        col1, col2 = st.columns([3, 1])
-        col1.write(t)
-        if col2.button("Delete", key=f"delete_{i}"):
-            st.session_state.stock_list.pop(i)
-            try:
-                st.experimental_rerun()
-            except st.runtime.scriptrunner.script_run_context.RerunException:
-                pass
 
 # Create a list to store processed data for each ticker
 processed_data_list = []
