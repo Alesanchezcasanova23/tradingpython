@@ -19,7 +19,7 @@ def calculate_rsi(data, window=14):
 # ======================================
 # Streamlit App
 # ======================================
-st.title("Stock and RSI Indicator")
+st.title("Stock and RSI Indicator easy")
 
 # Example list of possible tickers (you can expand this)
 AVAILABLE_TICKERS = [
