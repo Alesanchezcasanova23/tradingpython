@@ -160,7 +160,6 @@ if st.session_state.stock_list:
 #=======================================================================================================================
                 stock_data['RSI'] = calculate_rsi(stock_data)
                 # Calculate RSI
-                rsi = calculate_rsi(stock_data['aapl'], period=14)
 
                 # Generate signal: 1 when RSI < 30, 0 when RSI > 70
                 signal = pd.Series(index=stock_data.index, dtype=float)
